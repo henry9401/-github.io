@@ -68,10 +68,59 @@
 								<h3>喜歡看電影</h3>
 								<p>我常常跑電影院，因為我超級喜歡點影院裡的音效和畫面的震撼感</p>
 							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/06.jpg" class="image fit thumb"><img src="images/thumbs/06.jpg" alt="" /></a>
-								<h3>畫畫作品</h3>
-								<p>圖中的圖都是窩手癢的時候畫的!!</p>
+							import { useState } from 'react';
+import { Dialog } from '@/components/ui/dialog';
+import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+
+const images = [
+    '/images/fulls/01.jpg',
+    '/images/fulls/02.jpg',
+    '/images/fulls/03.jpg',
+    '/images/fulls/04.jpg',
+    '/images/fulls/05.jpg',
+    '/images/fulls/06.jpg'
+];
+
+export default function ImageGalleryWithArrows() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const showPrevious = () => {
+        setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+    };
+
+    const showNext = () => {
+        setCurrentIndex((currentIndex + 1) % images.length);
+    };
+
+    const openDialog = (index) => {
+        setCurrentIndex(index);
+        setIsOpen(true);
+    };
+
+    return (
+        <div className="grid grid-cols-2 gap-4">
+            {images.map((img, index) => (
+                <img key={index} src={img} alt="" className="cursor-pointer rounded-2xl shadow-md" onClick={() => openDialog(index)} />
+            ))}
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <div className="relative bg-black rounded-2xl p-4 max-w-3xl mx-auto">
+                    <button onClick={() => setIsOpen(false)} className="absolute top-2 right-2 text-white">
+                        <X size={24} />
+                    </button>
+                    <img src={images[currentIndex]} alt="" className="rounded-2xl w-full" />
+                    <button onClick={showPrevious} className="absolute top-1/2 left-2 text-white -translate-y-1/2">
+                        <ArrowLeft size={36} />
+                    </button>
+                    <button onClick={showNext} className="absolute top-1/2 right-2 text-white -translate-y-1/2">
+                        <ArrowRight size={36} />
+                    </button>
+                </div>
+            </Dialog>
+        </div>
+    );
+}
+
 							</article>
 						</div>
 						<ul class="actions">
