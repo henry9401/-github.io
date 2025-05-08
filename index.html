@@ -75,8 +75,20 @@
 							</article>
 						</div>
 						<ul class="actions">
-							<li><a href="#" class="button">更多繪畫作品</a></li>
-						</ul>
+    <li><a href="#" class="button" onclick="showGallery()">更多繪畫作品</a></li>
+</ul>
+
+<!-- 圖片畫廊 -->
+<div id="gallery" class="gallery" style="display: none;">
+    <div class="carousel">
+        <img src="C:\Users\user\OneDrive\Desktop\news_20242264039_D493A1.jpg" alt="Artwork 1" />
+        <img src="image2.jpg" alt="Artwork 2" />
+        <img src="image3.jpg" alt="Artwork 3" />
+        <!-- 添加更多的圖片 -->
+    </div>
+    <button onclick="prevImage()">上一張</button>
+    <button onclick="nextImage()">下一張</button>
+</div>
 					</section>
 				<!-- Three -->
 					<section id="three">
