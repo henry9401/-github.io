@@ -81,7 +81,7 @@ const images = [
     '/images/fulls/06.jpg'
 ];
 
-export default function ImageGalleryWithArrows() {
+export default function SingleImageFrameGallery() {
     const [isOpen, setIsOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -93,18 +93,21 @@ export default function ImageGalleryWithArrows() {
         setCurrentIndex((currentIndex + 1) % images.length);
     };
 
-    const openDialog = (index) => {
-        setCurrentIndex(index);
+    const openDialog = () => {
         setIsOpen(true);
     };
 
     return (
-        <div className="grid grid-cols-2 gap-4">
-            {images.map((img, index) => (
-                <img key={index} src={img} alt="" className="cursor-pointer rounded-2xl shadow-md" onClick={() => openDialog(index)} />
-            ))}
+        <div className="flex justify-center">
+            {/* 單一封面圖片 */}
+            <img
+                src={images[0]}
+                alt=""
+                className="cursor-pointer rounded-2xl shadow-md max-w-md"
+                onClick={openDialog}
+            />
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <div className="relative bg-black rounded-2xl p-4 max-w-3xl mx-auto">
+                <div className="relative bg-black rounded-2xl p-4 max-w-4xl mx-auto">
                     <button onClick={() => setIsOpen(false)} className="absolute top-2 right-2 text-white">
                         <X size={24} />
                     </button>
@@ -121,6 +124,8 @@ export default function ImageGalleryWithArrows() {
     );
 }
 
+   
+  
 							</article>
 						</div>
 						<ul class="actions">
