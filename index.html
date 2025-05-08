@@ -68,11 +68,71 @@
 								<h3>喜歡看電影</h3>
 								<p>我常常跑電影院，因為我超級喜歡點影院裡的音效和畫面的震撼感</p>
 							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/06.jpg" class="image fit thumb"><img src="images/thumbs/06.jpg" alt="" /></a>
-								<h3>畫畫作品</h3>
-								<p>圖中的圖都是窩手癢的時候畫的!!</p>
-							</article>
+							import { useState } from 'react';
+import { Dialog } from '@/components/ui/dialog';
+import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+
+// 畫畫作品資料
+const artworkGallery = {
+    title: '畫畫作品',
+    description: '圖中的圖都是窩手癢的時候畫的!!',
+    works: [
+        '/images/fulls/06-1.jpg',
+        '/images/fulls/06-2.jpg',
+        '/images/fulls/06-3.jpg',
+        '/images/fulls/06-4.jpg',
+        '/images/fulls/06-5.jpg'
+    ],
+    thumb: '/images/thumbs/06.jpg'
+};
+
+export default function ArtworkGallery() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const showPrevious = () => {
+        setCurrentIndex((currentIndex - 1 + artworkGallery.works.length) % artworkGallery.works.length);
+    };
+
+    const showNext = () => {
+        setCurrentIndex((currentIndex + 1) % artworkGallery.works.length);
+    };
+
+    const openDialog = () => {
+        setCurrentIndex(0);
+        setIsOpen(true);
+    };
+
+    return (
+        <article className="col-6 col-12-xsmall work-item">
+            {/* 單一封面圖片 - 畫畫作品 */}
+            <a className="image fit thumb" onClick={openDialog}>
+                <img src={artworkGallery.thumb} alt="" className="cursor-pointer rounded-2xl shadow-md max-w-md" />
+            </a>
+            <h3 className="text-xl font-bold mb-2">{artworkGallery.title}</h3>
+            <p className="text-gray-600 mb-6 text-center">{artworkGallery.description}</p>
+
+            {/* 彈出視窗 */}
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <div className="relative bg-black rounded-2xl p-4 max-w-4xl mx-auto">
+                    <button onClick={() => setIsOpen(false)} className="absolute top-2 right-2 text-white">
+                        <X size={24} />
+                    </button>
+                    <img src={artworkGallery.works[currentIndex]} alt="" className="rounded-2xl w-full mb-4" />
+                    <h3 className="text-2xl font-bold text-white mb-2 text-center">{artworkGallery.title}</h3>
+                    <p className="text-gray-300 text-center mb-4">{artworkGallery.description}</p>
+                    <button onClick={showPrevious} className="absolute top-1/2 left-2 text-white -translate-y-1/2">
+                        <ArrowLeft size={36} />
+                    </button>
+                    <button onClick={showNext} className="absolute top-1/2 right-2 text-white -translate-y-1/2">
+                        <ArrowRight size={36} />
+                    </button>
+                </div>
+            </Dialog>
+        </article>
+    );
+}
+
 						</div>
 						<ul class="actions">
 							<li><a href="#" class="button">Full Portfolio</a></li>
