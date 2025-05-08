@@ -42,38 +42,73 @@
 				<!-- Two -->
 					<section id="two">
 						<h2>關於我的一些小事情和興趣</h2>
-						<div class="row">
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/01.jpg" class="image fit thumb"><img src="images/thumbs/01.jpg" alt="" /></a>
-								<h3>日常打排球</h3>
-								<p>我超愛打排球，從國中校隊打到現在沒停過</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/02.jpg" class="image fit thumb"><img src="images/thumbs/02.jpg" alt="" /></a>
-								<h3>DM排版證照</h3>
-								<p>高中的時候念廣告設計科，就順便考了一張</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/03.jpg" class="image fit thumb"><img src="images/thumbs/03.jpg" alt="" /></a>
-								<h3>手製圖文</h3>
-								<p>我在最熱情的高一考了圖文製作的證照</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/04.jpg" class="image fit thumb"><img src="images/thumbs/04.jpg" alt="" /></a>
-								<h3>考試的時候畫畫</h3>
-								<p>我很喜歡在讀完書之後在旁邊畫下我最近看到的電影或是動漫</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/05.jpg" class="image fit thumb"><img src="images/thumbs/05.jpg" alt="" /></a>
-								<h3>喜歡看電影</h3>
-								<p>我常常跑電影院，因為我超級喜歡點影院裡的音效和畫面的震撼感</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/06.jpg" class="image fit thumb"><img src="images/thumbs/06.jpg" alt="" /></a>
-								<h3>畫畫作品</h3>
-								<p>圖中的圖都是窩手癢的時候畫的!!</p>
-							</article>
-						</div>
+						import { useState } from 'react';
+import { Dialog } from '@/components/ui/dialog';
+import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+
+// 圖片資料，包括標題和描述
+const galleryData = {
+    title: '我的作品集',
+    description: '在這裡展示我的一些作品',
+    images: [
+        { src: '/images/fulls/01.jpg', thumb: '/images/thumbs/01.jpg', title: '日常打排球', description: '我超愛打排球，從國中校隊打到現在沒停過' },
+        { src: '/images/fulls/02.jpg', thumb: '/images/thumbs/02.jpg', title: 'DM排版證照', description: '高中的時候念廣告設計科，就順便考了一張' },
+        { src: '/images/fulls/03.jpg', thumb: '/images/thumbs/03.jpg', title: '手製圖文', description: '我在最熱情的高一考了圖文製作的證照' },
+        { src: '/images/fulls/04.jpg', thumb: '/images/thumbs/04.jpg', title: '考試的時候畫畫', description: '我很喜歡在讀完書之後在旁邊畫下我最近看到的電影或是動漫' },
+        { src: '/images/fulls/05.jpg', thumb: '/images/thumbs/05.jpg', title: '喜歡看電影', description: '我常常跑電影院，因為我超級喜歡點影院裡的音效和畫面的震撼感' },
+        { src: '/images/fulls/06.jpg', thumb: '/images/thumbs/06.jpg', title: '畫畫作品', description: '圖中的圖都是窩手癢的時候畫的!!' }
+    ]
+};
+
+export default function SingleGalleryFrame() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const showPrevious = () => {
+        setCurrentIndex((currentIndex - 1 + galleryData.images.length) % galleryData.images.length);
+    };
+
+    const showNext = () => {
+        setCurrentIndex((currentIndex + 1) % galleryData.images.length);
+    };
+
+    const openDialog = () => {
+        setIsOpen(true);
+    };
+
+    return (
+        <div className="flex flex-col items-center">
+            {/* 單一封面圖片 */}
+            <img
+                src={galleryData.images[0].thumb}
+                alt=""
+                className="cursor-pointer rounded-2xl shadow-md max-w-md mb-4"
+                onClick={openDialog}
+            />
+            <h3 className="text-xl font-bold mb-2">{galleryData.images[0].title}</h3>
+            <p className="text-gray-600 mb-6 text-center">{galleryData.images[0].description}</p>
+
+            {/* 彈出視窗 */}
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <div className="relative bg-black rounded-2xl p-4 max-w-4xl mx-auto">
+                    <button onClick={() => setIsOpen(false)} className="absolute top-2 right-2 text-white">
+                        <X size={24} />
+                    </button>
+                    <img src={galleryData.images[currentIndex].src} alt="" className="rounded-2xl w-full mb-4" />
+                    <h3 className="text-2xl font-bold text-white mb-2 text-center">{galleryData.images[currentIndex].title}</h3>
+                    <p className="text-gray-300 text-center mb-4">{galleryData.images[currentIndex].description}</p>
+                    <button onClick={showPrevious} className="absolute top-1/2 left-2 text-white -translate-y-1/2">
+                        <ArrowLeft size={36} />
+                    </button>
+                    <button onClick={showNext} className="absolute top-1/2 right-2 text-white -translate-y-1/2">
+                        <ArrowRight size={36} />
+                    </button>
+                </div>
+            </Dialog>
+        </div>
+    );
+}
+
 						<ul class="actions">
 							<li><a href="#" class="button">Full Portfolio</a></li>
 						</ul>
